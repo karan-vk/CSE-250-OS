@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 void pickup_forks(int ph_num) {
   pthread_mutex_lock(&mutex);
 
-  printf("Philosopher #%d is HUNGRY. She tries to grab her forks.\n", ph_num + 1);
+  printf("Philosopher #%d is HUNGRY. He tries to grab her forks.\n", ph_num + 1);
   state[ph_num] = HUNGRY;
   test(ph_num);
   while (state[ph_num] != EATING) 
@@ -72,7 +72,7 @@ void test(int ph_num) {
 void return_forks(int ph_num) {
   pthread_mutex_lock(&mutex);
 
-  printf("Philosopher #%d puts down chopsticks. Now she asks her neighbors if they are hungry.\n", ph_num + 1);
+  printf("Philosopher #%d puts down chopsticks. Now He asks her neighbors if they are hungry.\n", ph_num + 1);
   state[ph_num] = THINKING;
   test(LEFT);
   test(RIGHT);

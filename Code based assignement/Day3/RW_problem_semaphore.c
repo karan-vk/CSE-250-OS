@@ -3,7 +3,7 @@
 #include <semaphore.h>
 #include <stdio.h>
 #include <unistd.h>
-//this is a test for github
+
 
 /* define # readers */
 #define THREADCOUNT 10
@@ -11,16 +11,13 @@
 void *reader(void *);
 void *writer(void *);
 
-/* Mock Functions  for future use */
 void databaseAccess();
 void databaseNonAccess();
 
-/* define semaphore object */
 sem_t sem;
-/* number of readers reading*/
-int readCount = 0;
-int writeCount = 0;
-int requestWrite = 0;
+int rCount = 0; //Read Count
+int wCount = 0; //Write Count
+int reqWrite = 0; //Request Write
 
 int main()
 {
@@ -31,14 +28,12 @@ int main()
     for (i = 0; i < THREADCOUNT; i++)
     {
         ids[i] = i + 1;
-        /* create reader thread and check if error */
         if (pthread_create(&readers[i], 0, reader, &ids[i]) != 0)
         {
             perror("error creating reader thread");
             //exit(1);
         }
     }
-    /* create writer thread and check if error */
     if (pthread_create(&writerThead, 0, writer, 0) != 0)
     {
         perror("error creating writer thread");
@@ -50,10 +45,8 @@ int main()
     return 0;
 }
 
-//writer method
 void *writer(void *arg)
 {
-    // writer can now write
     int wrt;
     while (1)
     {
@@ -61,25 +54,25 @@ void *writer(void *arg)
         databaseNonAccess();
 
         sem_wait(&sem);
-        if (readCount == 0)
-            writeCount++;
+        if (rCount == 0)
+            wCount++;
         else
         {
             wrt = 0;
-            requestWrite = 1;
+            reqWrite = 1;
         }
         sem_post(&sem);
 
         if (wrt)
         {
             databaseAccess();
-            printf("Writer writing with %d readers reading \n", readCount);
+            printf("Writer writing with %d readers reading \n", rCount);
 
             sleep(1);
 
             sem_wait(&sem);
-            writeCount--;
-            requestWrite = 0;
+            wCount--;
+            reqWrite = 0;
             sem_post(&sem);
         }
 
@@ -88,7 +81,7 @@ void *writer(void *arg)
     return 0;
 }
 
-void *reader(void *arg) /* readers function to read */
+void *reader(void *arg) 
 {
     int i = *(int *)arg;
     int can_read;
@@ -97,8 +90,8 @@ void *reader(void *arg) /* readers function to read */
         can_read = 1;
 
         sem_wait(&sem);
-        if (writeCount == 0 && requestWrite == 0)
-            readCount++;
+        if (wCount == 0 && reqWrite == 0)
+            rCount++;
         else
             can_read = 0;
         sem_post(&sem);
@@ -107,10 +100,10 @@ void *reader(void *arg) /* readers function to read */
         {
             databaseAccess();
             printf("Thread %d reading\n", i);
-            sleep(i); // slow it down to display
+            sleep(i); 
 
             sem_wait(&sem);
-            readCount--;
+            rCount--;
             sem_post(&sem);
         }
 
@@ -118,3 +111,5 @@ void *reader(void *arg) /* readers function to read */
     }
     return 0;
 };
+void databaseNonAccess(){};
+void databaseAccess(){};
