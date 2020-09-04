@@ -1,8 +1,8 @@
 #include <stdio.h>
 int available[10];
-int allocation[10][10];
+int allocate[10][10];
 int request[10][10];
-int need[10][10];
+int needed[10][10];
 
 int numberOfProcesses, numberOfResources;
 
@@ -41,7 +41,7 @@ void input()
         printf("process %d:\n", i);
         for (j = 0; j < numberOfResources; j++)
         {
-            scanf("%d", &allocation[i][j]);
+            scanf("%d", &allocate[i][j]);
         }
     }
     printf("Enter the available Resources:\n");
@@ -62,7 +62,7 @@ void show()
         
         for(j = 0; j < numberOfResources; j++)
         {
-            printf("%d ", allocation[i][j]);
+            printf("%d ", allocate[i][j]);
         }
         printf("\t ");
         
@@ -83,7 +83,7 @@ void show()
 
 void compute()
 {
-    int finish[10], need[10][10], flag = 1, k;
+    int finish[10], needed[10][10], flag = 1, k;
     int dead[10];
     int i, j;
     for( i = 0; i < numberOfProcesses; i ++ )
@@ -94,7 +94,7 @@ void compute()
     {
         for(j = 0; j < numberOfResources; j++)
         {
-            need[i][j] = request[i][j] - allocation[i][j];
+            needed[i][j] = request[i][j] - allocate[i][j];
         }
     }
     while(flag)
@@ -105,14 +105,14 @@ void compute()
             int c = 0;
             for( j = 0; j < numberOfResources; j++)
             {
-                if ( ( finish[i] == 0 ) && ( need[i][j] <= available[j] ) )
+                if ( ( finish[i] == 0 ) && ( needed[i][j] <= available[j] ) )
                 {
                     c++;
                     if ( c == numberOfResources )
                     {
                         for(k = 0; k < numberOfResources; k++)
                         {
-                            available[k] += allocation[i][j];
+                            available[k] += allocate[i][j];
                             finish[i] = 1;
                             flag = 1;
                         }
