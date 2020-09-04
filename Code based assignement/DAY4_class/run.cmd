@@ -1,0 +1,1 @@
+cl %1.c && cls && %1.exe && del %1.obj
