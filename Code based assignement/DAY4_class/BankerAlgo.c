@@ -8,7 +8,7 @@ int numberOfProcesses, numberOfResources;
 
 void input();
 void show();
-void compute();.
+void compute();
 
 
 int main()
@@ -21,7 +21,7 @@ int main()
 }
 void input()
 {
-    int i, j;s
+    int i, j;
     printf("Enter the number of Processes:\t");
     scanf("%d", &numberOfProcesses);
     printf("Enter the number of Resource Instances:\t");
