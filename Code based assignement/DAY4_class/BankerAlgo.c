@@ -1,18 +1,16 @@
 #include <stdio.h>
-/* Our Data Structure */
-int available[10];// m number of resource types
-int allocation[10][10];// Matrix of nxm, n = #resources m= #resourcetypes
-int request[10][10];// max [n][m] n = resource, m = resourcesTypes
+int available[10];
+int allocation[10][10];
+int request[10][10];
 int need[10][10];
 
-int numberOfProcesses, numberOfResources;// process, resource
+int numberOfProcesses, numberOfResources;
 
-// it's C so declare your methods at the top.
-void input();// Asks for all inputs
-void show();// Shows all outpus
-void compute();// Does all the heavy lifting.
+void input();
+void show();
+void compute();.
 
-// In main we put all of our functions together so they
+
 int main()
 {
     printf("Deadlock Detection Algorithm\n");
@@ -21,13 +19,12 @@ int main()
     compute();
     return 0;
 }
-// I could put in some validation, but it's more important to show the concepts
 void input()
 {
-    int i, j;// counters
-    printf("Enter the number of Processes:\t");// single integer, no limits
+    int i, j;s
+    printf("Enter the number of Processes:\t");
     scanf("%d", &numberOfProcesses);
-    printf("Enter the number of Resource Instances:\t");// single integer, no limits
+    printf("Enter the number of Resource Instances:\t");
     scanf("%d",&numberOfResources);
     printf("Enter the Request Matrix:\n");
     for( i = 0; i < numberOfProcesses; i++)
@@ -86,7 +83,7 @@ void show()
 
 void compute()
 {
-    int finish[10], need[10][10], flag = 1, k;// for the integer arrays, we are declared the maximum space we could take up.
+    int finish[10], need[10][10], flag = 1, k;
     int dead[10];
     int i, j;
     for( i = 0; i < numberOfProcesses; i ++ )
@@ -115,7 +112,7 @@ void compute()
                     {
                         for(k = 0; k < numberOfResources; k++)
                         {
-                            available[k] += allocation[i][j];// slightly different from the algorithm in our paper.
+                            available[k] += allocation[i][j];
                             finish[i] = 1;
                             flag = 1;
                         }
@@ -128,7 +125,7 @@ void compute()
             }
         }
     }
-    // go through and find the deadlocked processes.
+    
     j = 0;
     flag = 0;
     for(i = 0; i < numberOfProcesses; i++)
